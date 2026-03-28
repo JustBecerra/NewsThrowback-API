@@ -30,7 +30,7 @@ func (h *SearchHandler) Search(w http.ResponseWriter, r *http.Request) {
 	}
 
 	searchURL := fmt.Sprintf(
-		"%s/collections/chronicling-america/?q=%s&dates=%s/%s&fo=json",
+		"%s/collections/chronicling-america/?q=%s&dates=%s/%s&fo=json&c=5",
 		h.baseURL,
 		url.QueryEscape(keyword),
 		from,
@@ -55,6 +55,10 @@ func (h *SearchHandler) Search(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(body, &result); err != nil {
 		http.Error(w, "failed to parse API response", http.StatusInternalServerError)
 		return
+	}
+
+	if len(result.Results) > 5 {
+		result.Results = result.Results[:5]
 	}
 
 	w.Header().Set("Content-Type", "application/json")
