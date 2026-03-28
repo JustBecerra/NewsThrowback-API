@@ -9,6 +9,7 @@ import (
 	"NewsThrowback-API/config"
 	"NewsThrowback-API/db"
 	"NewsThrowback-API/handlers"
+	"NewsThrowback-API/middleware"
 	"NewsThrowback-API/repositories"
 	"NewsThrowback-API/routes"
 )
@@ -29,5 +30,5 @@ func main() {
 	routes.Register(mux, articleHandler, searchHandler)
 
 	log.Printf("server running on port %s", cfg.Port)
-	log.Fatal(http.ListenAndServe(":"+cfg.Port, mux))
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, middleware.CORS(mux)))
 }
