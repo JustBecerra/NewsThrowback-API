@@ -23,9 +23,10 @@ func main() {
 
 	articleRepo := repositories.NewArticleRepository(database)
 	articleHandler := handlers.NewArticleHandler(articleRepo)
+	searchHandler := handlers.NewSearchHandler(cfg.ChroniclingAmericaURL)
 
 	mux := http.NewServeMux()
-	routes.Register(mux, articleHandler)
+	routes.Register(mux, articleHandler, searchHandler)
 
 	log.Printf("server running on port %s", cfg.Port)
 	log.Fatal(http.ListenAndServe(":"+cfg.Port, mux))
